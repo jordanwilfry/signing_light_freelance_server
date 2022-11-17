@@ -16,7 +16,6 @@ const connection = require('./mongoConnect');
 connection();
 
 const cors = require('cors')
-const multer = require('multer')
 const morgan = require('morgan')
 const helmet = require('helmet')
 const cookieParser = require('cookie-parser')
@@ -40,25 +39,6 @@ app.use(morgan('common'))//send in the console the detail about the request you 
 app.use(cookieParser())
 
 app.use("/images", express.static(path.join(__dirname, "public/images")));
-
-const storage = multer.diskStorage({
-    destination: (req, file, cd) => {
-        cd(null, "public/images/post")
-    },
-    filename: (req, file, cb) => {
-        cb(null, req.body.name)
-    },
-})
-
-const upload = multer({storage : storage})
-
-app.post('/upload' , upload.single("file"), (req, res)=>{
-    try {
-        res.status(200).json('file have been uploaded')
-    } catch (error) {
-        console.log(error)
-    }
-})
 
 // working with socket
 
