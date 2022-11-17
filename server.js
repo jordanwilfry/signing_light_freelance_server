@@ -38,8 +38,6 @@ app.use(cors())
 app.use(morgan('common'))//send in the console the detail about the request you did
 app.use(cookieParser())
 
-app.use("/images", express.static(path.join(__dirname, "public/images")));
-
 // working with socket
 
 let users = []

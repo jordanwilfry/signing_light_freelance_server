@@ -6,9 +6,6 @@ const router = app.Router();
 const bcrypt = require("bcryptjs");
 const Cryptr = require("cryptr");
 // const cryptr = new Cryptr(process.env.ENCRYPT)
-
-const multer = require("multer");
-const gridFsStorage = require("multer-gridfs-storage");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -77,26 +74,6 @@ const Mailing = (receiverEmail, url) => {
   });
 };
 
-// profile uploaded
-const storage = multer.diskStorage({
-  destination: (req, file, cd) => {
-    cd(null, "./../public/images/profiles");
-  },
-  filename: (req, file, cb) => {
-    cb(null, req.body.profilePicture);
-  },
-});
-
-upload = multer({ storage: storage });
-
-router.post("/upload", upload.single("file"), async (req, res) => {
-  try {
-    res.status(200).json("file have been uploaded");
-  } catch (error) {
-    console.log(error);
-  }
-});
-
 router.get("/", (req, res) => {
   res.send("hello here we are working with the athentications");
 });
@@ -163,7 +140,7 @@ router.post("/register4", async (req, res) => {
     expiresIn: "1d",
   });
 
-  const url = `http://localhost:3000/email/confirmation/${token}`;
+  const url = `${process.env.CLIENT_URL}/email/confirmation/${token}`;
   try {
     await user
     .save()
